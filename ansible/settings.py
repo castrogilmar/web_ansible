@@ -128,4 +128,5 @@ STATIC_URL = '/static/'
 ASGI_APPLICATION = "ansible.routing.application"
 
 LOGIN_REDIRECT_URL = '/'
-LOGIN_URL=""
+LOGOUT_REDIRECT_URL = ''
+LOGIN_URL='login'

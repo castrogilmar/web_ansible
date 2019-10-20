@@ -19,7 +19,7 @@ from django.conf.urls import handler404
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('web_ansible.urls')),
+    path('web_ansible/', include('web_ansible.urls')),
 ]
 
 handler404 = 'web_ansible.views.page_not_found'

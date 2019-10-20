@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django.conf import settings
 
-def login(request):
+def login_view(request):
     
     if request.method == 'POST':
         print(request.POST)
@@ -11,7 +12,8 @@ def login(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            return render(request, 'web_ansible/index.html')
+            login(request, user)
+            return redirect('main')
         else:
             return render(request, 'web_ansible/404.html')
 
