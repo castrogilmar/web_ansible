@@ -1,5 +1,22 @@
-console.log(window.location)
+function appendMessage(msgReceived, msgUser) {
+    newMessage = $(`
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://source.unsplash.com/fn_BT9fwg_E/60x60" alt="">
+                    <div class="status-indicator bg-success"></div>
+                  </div>
+                  <div class="font-weight-bold">
+                    <div class="text-truncate">${msgReceived}</div>
+                    <div class="small text-gray-500">${msgUser}</div>
+                  </div>
+                </a>
+    `)
 
+    console.log(newMessage)
+    $("#messages-list").append(newMessage)
+
+    $("#counter-message").text((parseInt($("#counter-message").text())|0)+1)
+}
 var loc = window.location
 
 var wsStart='ws://'
@@ -45,6 +62,12 @@ sockect.onopen = function(e){
 }
 sockect.onmessage = function(e){
     console.log("message", e)
+    console.log(e.data)
+    
+
+    var chatDataMsg = JSON.parse(e.data)
+
+    appendMessage(chatDataMsg.message, chatDataMsg.username)
 }
 sockect.onerror = function(e){
     console.log("error", e)

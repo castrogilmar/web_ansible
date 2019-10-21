@@ -14,7 +14,7 @@ class ChatConsumer(AsyncConsumer):
                 "type":'websocket.accept'
             }
         )
-        print(self.scope.keys())
+        """ print(self.scope.keys())
         other_user=self.scope['url_route']['kwargs']
         me = self.scope['user']
         print(me, other_user)
@@ -24,7 +24,7 @@ class ChatConsumer(AsyncConsumer):
                 "type":'websocket.send',
                 "text":"Ola!!!!!!"
             }
-        )
+        ) """
 
     async def websocket_receive(self, event):
         print("recendo", event)
@@ -35,12 +35,26 @@ class ChatConsumer(AsyncConsumer):
             loaded_dict_data = json.loads(front_text)
 
             msg = loaded_dict_data.get('message')
+            user = self.scope['user']
+
+            print(user)
+
+            username = 'default'
+
+            if user.is_authenticated:
+                username=user.username
+
+            myResponse = {
+                'message': msg,
+                'username': username
+            }
             print(msg)
 
             await self.send(
                 {
                     "type":'websocket.send',
-                    "text":msg
+                    "text": json.dumps(myResponse)
+                    
                 }
             )
 
