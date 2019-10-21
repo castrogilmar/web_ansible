@@ -130,3 +130,13 @@ ASGI_APPLICATION = "ansible.routing.application"
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = ''
 LOGIN_URL='login'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+            #"hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')]
+        },
+    },
+}

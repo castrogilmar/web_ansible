@@ -18,13 +18,14 @@ function appendMessage(msgReceived, msgUser) {
     $("#counter-message").text((parseInt($("#counter-message").text())|0)+1)
 }
 var loc = window.location
+var userName=$("#user-name").text()
 
 var wsStart='ws://'
 
 if (loc.protocol == 'https:') 
     wsStart='wss://'
 
-var endpoint=`${wsStart}${loc.host}${loc.pathname}`
+var endpoint=`${wsStart}${loc.host}${loc.pathname}/`
 var sockect = new WebSocket(endpoint)
 var formData = $("#search-form")
 var msgInput = $("#search-input")
