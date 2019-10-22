@@ -17,6 +17,51 @@ function appendMessage(msgReceived, msgUser) {
 
     $("#counter-message").text((parseInt($("#counter-message").text())|0)+1)
 }
+
+
+function appendTasksDiv(jsonData) {
+    var playbook_name="example"
+    var id_task=1
+
+    $(".tasks").remove()
+
+    $.each(jsonData, (a, b) => {
+        console.log(b)
+
+        newMessage = $(`
+                <div data-id-tasks="${id_task}" class="row tasks"> 
+                    <div class="col-lg-6 mb-4">              
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                            <div>
+                            <h6 class="m-0 font-weight-bold text-primary">${playbook_name}: ${b.name}</h6>
+                            </div>
+                            <div></div>
+                            </div>
+                            <div class="card-body">
+                            <div id="status-task" class="text-right">
+                                
+                            </div>
+                            <p>Add some quality, svg illustrations to your project courtesy of  constantly updated collection of beautiful svg images that you can use completely free and without attribution!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        `)
+
+        id_task+=1
+
+        $("#div-content").append(newMessage)
+    })
+
+
+}
+
+$("#id-btn-get-tasks").on("click", (e) => {
+    alert("OPA")
+})
+
+
 var loc = window.location
 var userName=$("#user-name").text()
 
@@ -63,12 +108,13 @@ sockect.onopen = function(e){
 }
 sockect.onmessage = function(e){
     console.log("message", e)
-    console.log(e.data)
-    
-
+   
     var chatDataMsg = JSON.parse(e.data)
 
-    appendMessage(chatDataMsg.message, chatDataMsg.username)
+    console.log(chatDataMsg)
+
+    appendTasksDiv(chatDataMsg['message'])
+    //appendMessage(chatDataMsg.message, chatDataMsg.username)
 }
 sockect.onerror = function(e){
     console.log("error", e)

@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'ansible.urls'
+ROOT_URLCONF = 'Ansible.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ansible.wsgi.application'
+WSGI_APPLICATION = 'Ansible.wsgi.application'
 
 
 # Database
@@ -125,7 +125,7 @@ USE_TZ = True
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
-ASGI_APPLICATION = "ansible.routing.application"
+ASGI_APPLICATION = "Ansible.routing.application"
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = ''

@@ -3,6 +3,7 @@ import json
 from django.contrib.auth import get_user_model
 from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
+from .ansible_get_tasks import GetTasks
 
 class ChatConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
@@ -53,6 +54,11 @@ class ChatConsumer(AsyncConsumer):
             msg = loaded_dict_data.get('message')
             user = self.scope['user']
 
+            if msg == "get_tasks":
+                obj_tasks=GetTasks()
+                #print(obj_tasks)
+                msg=obj_tasks.get_taks()
+
             print(user)
 
             username = 'default'
@@ -90,6 +96,8 @@ class ChatConsumer(AsyncConsumer):
             ) """
     async def chat_message(self, event):
         print("message", event)
+
+
 
         await self.send(
                 {
