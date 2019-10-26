@@ -77,21 +77,7 @@ var msgInput = $("#search-input")
 var formData2 = $("#search-form-2")
 var msgInput2 = $("#search-input-2")
 
-sockect.onopen = function(e){
-    console.log("open", e)
-
-    formData.submit(function(event){
-        event.preventDefault()
-
-        var msgTxt=msgInput.val()
-
-        var finalData = {
-            'message': msgTxt
-        }
-        sockect.send(JSON.stringify(finalData))
-
-        msgInput.val("")
-    })
+sockect.onopen = function(e){   
 
     $("#id-btn-get-tasks").on("click", (e) => {
         var finalData = {
@@ -101,32 +87,19 @@ sockect.onopen = function(e){
     })
 
     $("#id-btn-exec-tasks").on("click", (e) => {
-
-        $.each(obj, (idx, ob)=> {
+        //$.each(obj, (idx, ob)=> {
             //console.log(ob)
-            $("#status-task",`#data-id-tasks-${idx}`).html(`<i class="fas fa-cog fa-spin"></i>`)            
+            $("#status-task",`#data-id-tasks-1`).html(`<i class="fas fa-cog fa-spin"></i>`)            
 
             var finalData = {
                 'message': 'exec_tasks',
-                'id_task': idx,
-                'task': ob
+                'id_task': 1,
+                'task': obj[1]
             }
             sockect.send(JSON.stringify(finalData))
-        })
+        //})
         
-    })
-
-    formData2.submit(function(event){
-        event.preventDefault()
-
-        var msgTxt=msgInput2.val()
-        var finalData = {
-            'message': msgTxt
-        }
-        sockect.send(JSON.stringify(finalData))
-
-        msgInput2.val("")
-    })
+    })    
 }
 sockect.onmessage = function(e){
     //console.log("message", e)
@@ -145,16 +118,31 @@ sockect.onmessage = function(e){
         var id_task=chatDataMsg['id_task']
         var result_task=result['result']
 
-        console.log(result_task)
-
-        if (result_task == 'ok')
+        if (result_task == 'ok') {
             $(".card-header",`#data-id-tasks-${id_task}`).addClass('result-ok')
-        else    
+            $("#status-task",`#data-id-tasks-${id_task}`).html(`<i class="fas fa-check"></i>`)
+        } else if (result_task == 'failed') {
             $(".card-header",`#data-id-tasks-${id_task}`).addClass('result-failed')
+            $("#status-task",`#data-id-tasks-${id_task}`).html(`<i class="fas fa-times"></i>`)
+        } else {
+            $(".card-header",`#data-id-tasks-${id_task}`).addClass('result-failed')
+            $("#status-task",`#data-id-tasks-${id_task}`).html(`<i class="fas fa-exclamation-triangle"></i>`)
+        }
         
-        $("#status-task",`#data-id-tasks-${id_task}`).html(result_task=='ok' ? `<i class="fas fa-check"></i>` :
-                                                           result_task=='failed' ? `<i class="fa fa-times" aria-hidden="true"></i>` :
-                                                           '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>')   
+        var next_idx=parseInt(id_task)+1
+
+        if ($(`#data-id-tasks-${next_idx}`).length == 1) {
+            var next_idx=parseInt(id_task)+1
+
+            $("#status-task",`#data-id-tasks-${next_idx}`).html(`<i class="fas fa-cog fa-spin"></i>`)
+
+            var finalData = {
+                'message': 'exec_tasks',
+                'id_task': next_idx,
+                'task': obj[next_idx]
+            }
+            sockect.send(JSON.stringify(finalData))  
+        }
     }
     //appendMessage(chatDataMsg.message, chatDataMsg.username)
 }
