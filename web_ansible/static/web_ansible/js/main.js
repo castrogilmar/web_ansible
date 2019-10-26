@@ -120,12 +120,15 @@ sockect.onmessage = function(e){
 
         if (result_task == 'ok') {
             $(".card-header",`#data-id-tasks-${id_task}`).addClass('result-ok')
+            $("h6",`#data-id-tasks-${id_task}`).addClass('result-ok')
             $("#status-task",`#data-id-tasks-${id_task}`).html(`<i class="fas fa-check"></i>`)
         } else if (result_task == 'failed') {
             $(".card-header",`#data-id-tasks-${id_task}`).addClass('result-failed')
+            $("h6",`#data-id-tasks-${id_task}`).addClass('result-failed')
             $("#status-task",`#data-id-tasks-${id_task}`).html(`<i class="fas fa-times"></i>`)
         } else {
             $(".card-header",`#data-id-tasks-${id_task}`).addClass('result-failed')
+            $("h6",`#data-id-tasks-${id_task}`).addClass('result-failed')
             $("#status-task",`#data-id-tasks-${id_task}`).html(`<i class="fas fa-exclamation-triangle"></i>`)
         }
         
