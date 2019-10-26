@@ -99,7 +99,7 @@ sockect.onopen = function(e){
                 }
                 sockect.send(JSON.stringify(finalData))
             } else
-                $("#status-task",`#data-id-tasks-1`).html(`<i class="fas fa-hourglass-start"></i>`)            
+                $("#status-task",`#data-id-tasks-${idx}`).html(`<i class="fas fa-hourglass-start"></i>`)            
         })
         
     })    
