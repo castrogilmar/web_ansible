@@ -1,7 +1,13 @@
 {% extends 'web_ansible/base.html' %}{% load staticfiles %}
 
+
+  {% block css %}
+  <link href="{% static 'web_ansible/css/style.css' %}" rel="stylesheet">
+  {% endblock css %}
+
             {% block btnpageHeading %}  
-            <a id="id-btn-get-tasks" href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            <a id="id-btn-get-tasks" href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Busca tarefas</a>
+            <a id="id-btn-exec-tasks" href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Executa tarefas</a>
             {% endblock btnpageHeading %}
 
           {% block content %}

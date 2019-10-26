@@ -1,0 +1,11 @@
+.result-ok {
+    background-color: green;
+}
+
+.result-failed {
+    background-color: red;
+}
+
+.text-primary+.result-failed {
+    color: white;
+}

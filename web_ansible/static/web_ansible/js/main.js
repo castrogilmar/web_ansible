@@ -12,7 +12,7 @@ function appendMessage(msgReceived, msgUser) {
                 </a>
     `)
 
-    console.log(newMessage)
+    
     $("#messages-list").append(newMessage)
 
     $("#counter-message").text((parseInt($("#counter-message").text())|0)+1)
@@ -26,10 +26,11 @@ function appendTasksDiv(jsonData) {
     $(".tasks").remove()
 
     $.each(jsonData, (a, b) => {
-        console.log(b)
+        
+        obj[id_task]=b
 
         newMessage = $(`
-                <div data-id-tasks="${id_task}" class="row tasks"> 
+                <div id="data-id-tasks-${id_task}" class="row tasks"> 
                     <div class="col-lg-6 mb-4">              
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
@@ -57,10 +58,8 @@ function appendTasksDiv(jsonData) {
 
 }
 
-$("#id-btn-get-tasks").on("click", (e) => {
-    alert("OPA")
-})
 
+var obj={}
 
 var loc = window.location
 var userName=$("#user-name").text()
@@ -94,6 +93,29 @@ sockect.onopen = function(e){
         msgInput.val("")
     })
 
+    $("#id-btn-get-tasks").on("click", (e) => {
+        var finalData = {
+            'message': 'get_tasks'
+        }
+        sockect.send(JSON.stringify(finalData))
+    })
+
+    $("#id-btn-exec-tasks").on("click", (e) => {
+
+        $.each(obj, (idx, ob)=> {
+            //console.log(ob)
+            $("#status-task",`#data-id-tasks-${idx}`).html(`<i class="fas fa-cog fa-spin"></i>`)            
+
+            var finalData = {
+                'message': 'exec_tasks',
+                'id_task': idx,
+                'task': ob
+            }
+            sockect.send(JSON.stringify(finalData))
+        })
+        
+    })
+
     formData2.submit(function(event){
         event.preventDefault()
 
@@ -107,13 +129,33 @@ sockect.onopen = function(e){
     })
 }
 sockect.onmessage = function(e){
-    console.log("message", e)
+    //console.log("message", e)
    
     var chatDataMsg = JSON.parse(e.data)
 
-    console.log(chatDataMsg)
+    //console.log(chatDataMsg)
 
-    appendTasksDiv(chatDataMsg['message'])
+    if (chatDataMsg['request']=='get_tasks')
+        appendTasksDiv(chatDataMsg['message'])
+    if (chatDataMsg['request']=='exec_tasks') {
+        console.log(chatDataMsg['message'])
+        
+        var result=chatDataMsg['message']
+
+        var id_task=chatDataMsg['id_task']
+        var result_task=result['result']
+
+        console.log(result_task)
+
+        if (result_task == 'ok')
+            $(".card-header",`#data-id-tasks-${id_task}`).addClass('result-ok')
+        else    
+            $(".card-header",`#data-id-tasks-${id_task}`).addClass('result-failed')
+        
+        $("#status-task",`#data-id-tasks-${id_task}`).html(result_task=='ok' ? `<i class="fas fa-check"></i>` :
+                                                           result_task=='failed' ? `<i class="fa fa-times" aria-hidden="true"></i>` :
+                                                           '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>')   
+    }
     //appendMessage(chatDataMsg.message, chatDataMsg.username)
 }
 sockect.onerror = function(e){

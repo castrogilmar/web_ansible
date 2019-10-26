@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
 from .ansible_get_tasks import GetTasks
+from .ansible_exec_tasks import ExecTasks
 
 class ChatConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
@@ -53,11 +54,24 @@ class ChatConsumer(AsyncConsumer):
 
             msg = loaded_dict_data.get('message')
             user = self.scope['user']
+            request=""
+            id_task=""
 
             if msg == "get_tasks":
                 obj_tasks=GetTasks()
                 #print(obj_tasks)
                 msg=obj_tasks.get_taks()
+                request="get_tasks"
+
+            if msg == "exec_tasks":
+                obj_tasks=ExecTasks()
+
+                taks = loaded_dict_data.get('task') 
+                id_task = loaded_dict_data.get('id_task')               
+                msg=obj_tasks.exec_task(taks)      
+                request="exec_tasks"            
+
+                #print(msg) 
 
             print(user)
 
@@ -68,9 +82,11 @@ class ChatConsumer(AsyncConsumer):
 
             myResponse = {
                 'message': msg,
-                'username': username
+                'request': request,
+                'username': username,
+                'id_task': id_task
             }
-            print(msg)
+            #print(msg)
 
             new_event={
                     "type":'websocket.send',
