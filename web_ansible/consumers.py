@@ -58,17 +58,19 @@ class ChatConsumer(AsyncConsumer):
             id_task=""
 
             if msg == "get_tasks":
+                playbook_name = loaded_dict_data.get('playbook_name') 
                 obj_tasks=GetTasks()
                 #print(obj_tasks)
-                msg=obj_tasks.get_taks()
+                msg=obj_tasks.get_task(playbook_name)
                 request="get_tasks"
 
             if msg == "exec_tasks":
                 obj_tasks=ExecTasks()
 
-                taks = loaded_dict_data.get('task') 
+                task = loaded_dict_data.get('task') 
+                playbook_name = loaded_dict_data.get('playbook_name') 
                 id_task = loaded_dict_data.get('id_task')               
-                msg=obj_tasks.exec_task(taks)      
+                msg=obj_tasks.exec_task(playbook_name, task)      
                 request="exec_tasks"            
 
                 #print(msg) 

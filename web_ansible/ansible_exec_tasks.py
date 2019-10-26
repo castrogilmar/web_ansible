@@ -20,12 +20,14 @@ class ResultsCollector(CallbackBase):
         name = result._host.get_name()
         task = result._task.get_name()
         #ansible_log(result)
+        print("ERROR")
         #self.host_unreachable[result._host.get_name()] = result
         self.host_unreachable.append(dict(ip=name, task=task, result=result))
 
     def v2_runner_on_ok(self, result,  *args, **kwargs):
         name = result._host.get_name()
         task = result._task.get_name()
+        print("OKAAAAAAAA")
         if task == "setup":
             pass
         elif "Info" in task:
@@ -37,25 +39,22 @@ class ResultsCollector(CallbackBase):
     def v2_runner_on_failed(self, result,   *args, **kwargs):
         name = result._host.get_name()
         task = result._task.get_name()
-        #ansible_log(result)
+        print("ERROR")
         self.host_failed.append(dict(ip=name, task=task, result=result))
 
 class ExecTasks():
 
-    def exec_task(self, task):
+    def exec_task(self, playbook_name, task):
         loader = DataLoader()
         inventory = InventoryManager(loader=loader, sources='localhost,')
         Options = namedtuple('Options', ['connection', 'module_path', 'forks', 'become', 'become_method', 'become_user', 'check', 'diff'])
         options = Options(connection='local', module_path=['/usr/lib/python2.7/dist-packages/ansible'], forks=10, become=None, become_method=None, become_user=None, check=False, diff=False)
 
         variable_manager = VariableManager(loader=loader, inventory=inventory)
-        variable_manager.extra_vars={"ansible_ssh_user":"root" }#, "ansible_ssh_pass":"xxx"} # ??????
-        # ??pb, ??????, ?????ad-hoc?playbook????????pb, ??????play?????
-        # :param name: ???,??playbook?tasks??name
-        # :param hosts: playbook??hosts
-        # :param tasks: playbook??tasks, ?????playbook???, ??tasks??????,????????task
+        print(playbook_name)
+        variable_manager.extra_vars={"ansible_ssh_user":"root", "playbook":playbook_name }#, "ansible_ssh_pass":"xxx"} # ??????
         play_source = {"name":"Ansible Web","hosts":"localhost","gather_facts":"no","tasks":[task]}
-        print(play_source)
+        print("PLAT SOURCE       > ",play_source)
         play = Play().load(play_source, variable_manager=variable_manager, loader=loader)
         tqm = None
         callback = ResultsCollector()
@@ -70,7 +69,9 @@ class ExecTasks():
             run_tree=False,
             )
             result = tqm.run(play)
+            retorno={}
 
+            print("RESULT     > ",result)
             if len(callback.host_ok):
                 retorno=callback.host_ok[0]['result']._result
                 retorno['result']='ok'
@@ -82,13 +83,12 @@ class ExecTasks():
             if len(callback.host_unreachable):
                 retorno=callback.host_unreachable[0]['result']._result
                 retorno['result']='unreachable'
-                
+
+            if len(retorno) == 0:
+                retorno['result']='ok' if result == 0 else 'failed'
 
             return retorno    
         finally:
             if tqm is not None:
                 tqm.cleanup()
 
-
-
-          

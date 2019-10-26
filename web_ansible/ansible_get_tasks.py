@@ -10,15 +10,17 @@ from ansible.plugins.callback import CallbackBase
 import ansible.constants as C
 
 class GetTasks():
-    def get_taks(self):
+    def get_task(self, playbook_name):
         loader = DataLoader() # Takes care of finding and reading yaml, json and ini files
 
-        playbook_data=loader.load_from_file("/home/gilmar/ansible/{}".format("example.yml"))
+        playbook_data=loader.load_from_file(f"/home/gilmar/ansible/{playbook_name}.yml")
+
+        print(playbook_data)
 
         for data in playbook_data:
             if 'roles' in data:
                 for role in data['roles']:
-                    roles_data=loader.load_from_file("/home/gilmar/ansible/roles/{}/tasks/main.yml".format(role))
+                    roles_data=loader.load_from_file(f"/home/gilmar/ansible/roles/{role}/tasks/main.yml")
 
                     #print(roles_data)
 

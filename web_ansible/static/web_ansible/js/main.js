@@ -20,7 +20,6 @@ function appendMessage(msgReceived, msgUser) {
 
 
 function appendTasksDiv(jsonData) {
-    var playbook_name="example"
     var id_task=1
 
     $(".tasks").remove()
@@ -60,6 +59,7 @@ function appendTasksDiv(jsonData) {
 
 
 var obj={}
+var playbook_name="init_container"
 
 var loc = window.location
 var userName=$("#user-name").text()
@@ -81,7 +81,8 @@ sockect.onopen = function(e){
 
     $("#id-btn-get-tasks").on("click", (e) => {
         var finalData = {
-            'message': 'get_tasks'
+            'message': 'get_tasks',
+            'playbook_name': playbook_name,
         }
         sockect.send(JSON.stringify(finalData))
     })
@@ -95,6 +96,7 @@ sockect.onopen = function(e){
                 var finalData = {
                     'message': 'exec_tasks',
                     'id_task': 1,
+                    'playbook_name': playbook_name,
                     'task': obj[1]
                 }
                 sockect.send(JSON.stringify(finalData))
@@ -145,6 +147,7 @@ sockect.onmessage = function(e){
             var finalData = {
                 'message': 'exec_tasks',
                 'id_task': next_idx,
+                'playbook_name': playbook_name,
                 'task': obj[next_idx]
             }
             sockect.send(JSON.stringify(finalData))  
