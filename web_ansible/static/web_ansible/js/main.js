@@ -87,17 +87,20 @@ sockect.onopen = function(e){
     })
 
     $("#id-btn-exec-tasks").on("click", (e) => {
-        //$.each(obj, (idx, ob)=> {
+        $.each(obj, (idx, ob)=> {
             //console.log(ob)
-            $("#status-task",`#data-id-tasks-1`).html(`<i class="fas fa-cog fa-spin"></i>`)            
+            if (idx == 1) {
+                $("#status-task",`#data-id-tasks-1`).html(`<i class="fas fa-cog fa-spin"></i>`)            
 
-            var finalData = {
-                'message': 'exec_tasks',
-                'id_task': 1,
-                'task': obj[1]
-            }
-            sockect.send(JSON.stringify(finalData))
-        //})
+                var finalData = {
+                    'message': 'exec_tasks',
+                    'id_task': 1,
+                    'task': obj[1]
+                }
+                sockect.send(JSON.stringify(finalData))
+            } else
+                $("#status-task",`#data-id-tasks-1`).html(`<i class="fas fa-hourglass-start"></i>`)            
+        })
         
     })    
 }
