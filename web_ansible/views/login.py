@@ -5,7 +5,12 @@ from django.conf import settings
 
 def login_view(request):
 
-    
+    next = ""
+
+    if request.GET:  
+        next = request.GET['next']
+
+    print(next)    
     u = User.objects.get(username__exact="katilene")
     u.set_password("katilene")
     u.save()
@@ -19,7 +24,11 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect('main')
+
+            if next == "":
+                return redirect('main')
+            else:
+                return redirect(next)
         else:
             return render(request, 'web_ansible/404.html')
 

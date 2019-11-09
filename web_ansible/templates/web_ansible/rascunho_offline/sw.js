@@ -1,19 +1,17 @@
 var CACHE_NAME = 'my-site-cache-v1';
 var urlsToCache = [
-  '/static/web_ansible/css/sb-admin-2.min.css',
-  '/static/web_ansible/js/sb-admin-2.min.js',
-  
+  '/static/web_ansible/js/rascunho.js'
 ];
 
 self.addEventListener('install', function(event) {
   // Perform install steps
-  event.waitUntil(
+  /* event.waitUntil(
     caches.open(CACHE_NAME)
       .then(function(cache) {
         console.log('Opened cache');
         return cache.addAll(urlsToCache);
       })
-  );
+  ); */
 });
 
 self.addEventListener('fetch', function(event) {

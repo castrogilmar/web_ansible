@@ -1,0 +1,44 @@
+{% extends 'web_ansible/base.html' %}{% load staticfiles %}
+{% block meta %}
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+      navigator.serviceWorker.register('sw.js', {scope:'./'}).then(function(registration) {
+      // Registration was successful
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }, function(err) {
+      // registration failed :(
+        console.log('ServiceWorker registration failed: ', err);
+      });      
+});
+}
+</script>
+{% endblock meta %}
+
+{% block css %}
+<link href="{% static 'web_ansible/css/style.css' %}" rel="stylesheet">
+{% endblock css %}
+
+{% block btnpageHeading %}  
+<a id="id-btn-get-tasks" href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Busca tarefas</a>
+<a id="id-btn-exec-tasks" href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Executa tarefas</a>
+{% endblock btnpageHeading %}
+
+{% block content %}        
+<div class="input-group">
+  <label>Campo X</label>
+  <input type="text" class="form-control bg-light border-0 small" aria-describedby="basic-addon2">
+  <div class="input-group-append">
+    <button id="btn-add" class="btn btn-primary" type="button">
+      <i class="fas fa-search fa-sm"></i>
+    </button>
+  </div>
+</div>          
+{% endblock content %}
+  
+{% block js %}
+<script src="{% static 'web_ansible/js/rascunho.js' %}"></script>
+{% endblock js %}
+</body>
+
+</html>

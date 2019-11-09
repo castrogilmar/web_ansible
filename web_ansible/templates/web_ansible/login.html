@@ -3,19 +3,7 @@
 <html lang="en">
 
 <head>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-      navigator.serviceWorker.register('sw.js', {scope:'./'}).then(function(registration) {
-      // Registration was successful
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      }, function(err) {
-      // registration failed :(
-        console.log('ServiceWorker registration failed: ', err);
-      });
-    });
-  }
-  </script>
+  
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -63,8 +51,12 @@
                     </div>
                     <a href="javascript:{}" onclick="javascript:login.submit(); return false" class="btn btn-primary btn-user btn-block">
                       Login
-                    </a>
+                    </a>                    
                   </form>
+                  <hr>
+                  <a href="{% url 'rascoffline' %}" class="btn btn-google btn-user btn-block">
+                    <i class="fa fa-wifi fa-fw"></i> Trabalho off-line
+                  </a>
                   <hr>
                   <div class="text-center">
                     <a class="small" href="forgot-password.html">Forgot Password?</a>
@@ -92,9 +84,9 @@
   <script src="{% static 'web_ansible/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="{% static 'web_ansible/js/sb-admin-2.min.js' %}"></script>
+  <script src="{% static 'web_ansible/js/sb-admin-2.min.js' %}"></script> 
 
-  
+  <script src="{% static 'web_ansible/js/login.js' %}"></script> 
 
 </body>
 
